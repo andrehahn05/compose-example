@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.appdelivery.ui.components.ProductItem
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 import com.example.appdelivery.ui.theme.Red40
 import com.example.appdelivery.ui.theme.Red80
@@ -43,64 +44,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun ProductItem() {
-    Surface(
-        shape = RoundedCornerShape(15.dp),
-        shadowElevation = 6.dp,
-        modifier = Modifier.padding(8.dp),
-    ) {
-        Column(
-            Modifier
-                .heightIn(250.dp, 300.dp)
-                .width(200.dp)
-        ) {
-            Box(
-                Modifier
-                    .height(100.dp)
-                    .background(
-                        Brush.linearGradient(
-                            listOf(
-                                Red80,
-                                Red40,
-                                Yellow40
-                            )
-                        )
-                    )
-                    .fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = null,
-                    Modifier
-                        .size(100.dp)
-                        .offset(y = 50.dp)
-                        .clip(CircleShape)
-                        .align(BottomCenter)
-
-                )
-            }
-            Spacer(modifier = Modifier.height(50.dp))
-            Column(Modifier.padding(16.dp)) {
-                Text(
-                    text = LoremIpsum(50).values.first(),
-                    maxLines = 2,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = "R$ 20,25",
-                    Modifier.padding(top = 4.dp),
-                    fontWeight = FontWeight(400),
-                    fontSize = 14.sp,
-                )
-            }
-        }
-    }
-}
-
 @Preview(name = "ProductItem", showBackground = true)
 @Composable
 fun ProductItemPreview() {
