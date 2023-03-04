@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.material3.*
 
@@ -47,32 +49,42 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
+@Preview(showBackground = true)
 @Composable
 fun ProductItem() {
-
-    Column() {
-        Box(
-            Modifier
-                .heightIn(200.dp, 250.dp)
-                .background(Brush.linearGradient(listOf(Red80, Red40, Yellow40)))
-                .fillMaxWidth()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = null,
+    Surface(
+        shape = RoundedCornerShape(15.dp),
+        shadowElevation = 6.dp
+    ){
+        Column(Modifier
+            .heightIn(200.dp, 300.dp)
+            .width(200.dp)) {
+            Box(
                 Modifier
-                    .size(100.dp)
-                    .offset(y = 50.dp)
-                    .clip(CircleShape)
-                    .align(BottomCenter)
+                    .height(100.dp)
+                    .background(Brush.linearGradient(listOf(
+                        Red80,
+                        Red40,
+                        Yellow40
+                    )))
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    Modifier
+                        .size(100.dp)
+                        .offset(y = 50.dp)
+                        .clip(CircleShape)
+                        .align(BottomCenter)
 
-            )
-        }
-        Spacer(modifier = Modifier.height(50.dp))
-        Column() {
-            Text(text = LoremIpsum(50).values.first(),maxLines = 2,)
-            Text(text = LoremIpsum(50).values.first(),maxLines = 2,)
+                )
+            }
+            Spacer(modifier = Modifier.height(50.dp))
+            Column() {
+                Text(text = LoremIpsum(50).values.first(),maxLines = 2,)
+                Text(text = LoremIpsum(50).values.first(),maxLines = 2,)
+            }
         }
     }
 }
