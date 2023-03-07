@@ -7,8 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.appdelivery.model.Product
 import com.example.appdelivery.ui.components.ProductItem
 import com.example.appdelivery.ui.components.ProductsSection
+import com.example.appdelivery.ui.screens.HomeScreen
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,17 +22,17 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
 
                     ) {
-                    ProductsSection()
+                    App()
                 }
             }
         }
     }
 }
-@Preview(name = "ProductItem", showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun App() {
     AppDeliveryTheme {
-        ProductsSection()
-//        ProductItem()
+        Surface {
+            HomeScreen()
+        }
     }
 }

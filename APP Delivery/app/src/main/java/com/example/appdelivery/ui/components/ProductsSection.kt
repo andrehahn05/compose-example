@@ -15,7 +15,7 @@ import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 @Composable
-fun ProductsSection(title:String,products:List<Product>) {
+fun ProductsSection(title: String, products: List<Product>) {
     Column() {
         Text(
             text = title,
@@ -28,10 +28,11 @@ fun ProductsSection(title:String,products:List<Product>) {
                 .padding(top = 8.dp)
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState()),
-            Arrangement.spacedBy(16.dp)) {
+            Arrangement.spacedBy(16.dp)
+        ) {
             Spacer(Modifier)
-            for ( p in products) {
-                ProductItem(product = p )
+            for (p in products) {
+                ProductItem(product = p)
             }
             Spacer(Modifier)
         }

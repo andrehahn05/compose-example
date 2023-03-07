@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,7 +62,9 @@ fun ProductItem(product: Product) {
                         .size(100.dp)
                         .offset(y = 50.dp)
                         .clip(CircleShape)
-                        .align(BottomCenter)
+                        .align(BottomCenter),
+                    contentScale = ContentScale.Crop
+
 
                 )
             }
