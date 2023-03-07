@@ -10,13 +10,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.appdelivery.model.Product
+import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 @Composable
-fun ProductsSection() {
+fun ProductsSection(title:String,products:List<Product>) {
     Column() {
         Text(
-            text = "Promoções",
+            text = title,
             Modifier.padding(start = 16.dp, end = 16.dp),
             fontSize = 20.sp,
             fontWeight = FontWeight(400),
@@ -28,8 +30,8 @@ fun ProductsSection() {
                 .horizontalScroll(rememberScrollState()),
             Arrangement.spacedBy(16.dp)) {
             Spacer(Modifier)
-            for (i in 1..4) {
-                ProductItem()
+            for ( p in products) {
+                ProductItem(product = p )
             }
             Spacer(Modifier)
         }
@@ -40,6 +42,6 @@ fun ProductsSection() {
 @Composable
 fun ProductsSectionPreviw() {
     AppDeliveryTheme {
-        ProductsSection()
+        ProductsSection("Promoções", products = sampleProducts)
     }
 }
