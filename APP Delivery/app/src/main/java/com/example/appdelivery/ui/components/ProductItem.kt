@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.appdelivery.R
+import com.example.appdelivery.model.Product
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 import com.example.appdelivery.ui.theme.Red40
 import com.example.appdelivery.ui.theme.Red80
@@ -27,7 +28,7 @@ import com.example.appdelivery.ui.theme.Yellow40
 
 
 @Composable
-fun ProductItem() {
+fun ProductItem(product: Product) {
     Surface(
         shape = RoundedCornerShape(15.dp),
         shadowElevation = 4.dp,
