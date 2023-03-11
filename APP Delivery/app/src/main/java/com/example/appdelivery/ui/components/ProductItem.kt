@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.appdelivery.R
 import com.example.appdelivery.extensions.toBrazilianCurrency
 import com.example.appdelivery.model.Product
@@ -55,19 +56,19 @@ fun ProductItem(product: Product) {
                     )
                     .fillMaxWidth()
             ) {
-                Image(
-                    painter =  painterResource(product.image),
+                AsyncImage(
+                    model = product.image,
                     contentDescription = null,
                     Modifier
                         .size(100.dp)
                         .offset(y = 50.dp)
                         .clip(CircleShape)
                         .align(BottomCenter),
-                    contentScale = ContentScale.Crop
-
-
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.placeholder)
                 )
             }
+
             Spacer(modifier = Modifier.height(50.dp))
             Column(Modifier.padding(16.dp)) {
                 Text(
@@ -96,7 +97,7 @@ fun ProductItemPreview() {
             Product(
                 name = LoremIpsum(50).values.first(),
                 price = BigDecimal("14.99"),
-                image = R.drawable.placeholder
+
             )
         )
     }
