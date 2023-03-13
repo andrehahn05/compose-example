@@ -1,8 +1,8 @@
 package com.example.appdelivery.sampledata
 
-import com.example.appdelivery.R
 import com.example.appdelivery.model.Product
 import java.math.BigDecimal
+
 val sampleCandies = listOf(
     Product(
         name = "Chocolate",

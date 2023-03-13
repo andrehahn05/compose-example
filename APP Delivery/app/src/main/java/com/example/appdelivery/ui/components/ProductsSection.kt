@@ -39,7 +39,7 @@ fun ProductsSection(title: String, products: List<Product>) {
 
 @Preview(showBackground = true, widthDp = 600)
 @Composable
-fun ProductsSectionPreviw() {
+fun ProductsSectionPreview() {
     AppDeliveryTheme {
         ProductsSection("Promoções", products = sampleProducts)
     }
