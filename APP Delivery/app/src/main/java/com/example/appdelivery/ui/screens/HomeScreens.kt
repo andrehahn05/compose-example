@@ -1,10 +1,8 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+
 
 package com.example.appdelivery.ui.screens
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,10 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.example.appdelivery.model.Product
 import com.example.appdelivery.sampledata.sampleSections
 import com.example.appdelivery.ui.components.ProductsSection
-import com.example.appdelivery.ui.theme.Red40
-import kotlin.math.round
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     sections: Map<String, List<Product>>
@@ -38,9 +35,11 @@ fun HomeScreen(
                     end = 16.dp,
                     top = 20.dp,
                 )
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(50),
+                .fillMaxWidth()
+                .background(colorScheme.background),
+            shape = RoundedCornerShape(100.dp),
             leadingIcon = {
+                Modifier
                 Icon(Icons.Default.Search, contentDescription = "ícone de pesquisa" )
             },
             label = {
