@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-
 import com.example.appdelivery.R
 import com.example.appdelivery.extensions.toBrazilianCurrency
 import com.example.appdelivery.model.Product
@@ -41,6 +40,7 @@ fun ProductItem(product: Product) {
             Modifier
                 .heightIn(250.dp, 300.dp)
                 .width(200.dp)
+                .background(colorScheme.onBackground)
         ) {
             Box(
                 Modifier
@@ -69,6 +69,7 @@ fun ProductItem(product: Product) {
                 )
             }
 
+
             Spacer(modifier = Modifier.height(50.dp))
             Column(Modifier.padding(16.dp)) {
                 Text(
@@ -76,7 +77,8 @@ fun ProductItem(product: Product) {
                     maxLines = 2,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+
                 )
                 Text(
                     text = product.price.toBrazilianCurrency(),

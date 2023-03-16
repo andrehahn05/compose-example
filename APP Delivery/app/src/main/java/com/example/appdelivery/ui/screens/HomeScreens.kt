@@ -1,5 +1,4 @@
 
-
 package com.example.appdelivery.ui.screens
 
 import androidx.compose.foundation.background
@@ -26,9 +25,12 @@ fun HomeScreen(
 ) {
     Column {
         var text by remember { mutableStateOf("") }
-        OutlinedTextField(value = text, onValueChange = { newValue ->
-            text = newValue
-        },
+
+        OutlinedTextField(
+            text, { newValue ->
+                text = newValue
+            },
+
             Modifier
                 .padding(
                     start = 16.dp,
@@ -37,10 +39,11 @@ fun HomeScreen(
                 )
                 .fillMaxWidth()
                 .background(colorScheme.background),
-            shape = RoundedCornerShape(100.dp),
+            shape = RoundedCornerShape(50.dp),
+
             leadingIcon = {
                 Modifier
-                Icon(Icons.Default.Search, contentDescription = "ícone de pesquisa" )
+                Icon(Icons.Default.Search, contentDescription = "ícone de pesquisa")
             },
             label = {
                 Text(text = "Produto")
