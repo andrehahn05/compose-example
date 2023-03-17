@@ -4,6 +4,7 @@ package com.example.appdelivery.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -14,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.appdelivery.model.Product
+import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.sampledata.sampleSections
+import com.example.appdelivery.ui.components.CardProductItem
 import com.example.appdelivery.ui.components.ProductsSection
 
 
@@ -58,16 +61,19 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            for (section in sections) {
-                val title = section.key
-                val products = section.value
-                item {
-                    ProductsSection(
-                        title = title,
-                        products = products
-                    )
-                }
+            items(sampleProducts) {products ->
+                CardProductItem(product = products)
             }
+//            for (section in sections) {
+//                val title = section.key
+//                val products = section.value
+//                item {
+//                    ProductsSection(
+//                        title = title,
+//                        products = products
+//                    )
+//                }
+//            }
         }
     }
 }

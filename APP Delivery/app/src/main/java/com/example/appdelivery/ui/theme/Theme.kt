@@ -17,26 +17,30 @@ import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = Red80,
-    secondary = Yellow40,
-    tertiary = Red40,
+    onPrimary = Red40,
+    secondary = white20,
+    tertiary = Yellow40,
     background = Dark40,
     onBackground = Dark85
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Red80,
-    secondary = Yellow40,
-    tertiary = Red40,
+    onPrimary = Red40,
+    secondary = white20,
+    onSecondary = Red20,
+    tertiary = Yellow40,
     background = white20,
     onBackground = white40
 
     /* Other default colors to override
     background = Color.white20,
     surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
+    onPrimary = Color.Red20,
     onSecondary = Color.White,
     onTertiary = Color.Yellow40,
     onBackground = color.white40,
+    tertiary = Red40,
     onSurface = Color(0xFF1C1B1F),
     */
 )
