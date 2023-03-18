@@ -18,7 +18,6 @@ import com.example.appdelivery.model.Product
 import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.sampledata.sampleSections
 import com.example.appdelivery.ui.components.CardProductItem
-import com.example.appdelivery.ui.components.ProductsSection
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,11 +34,7 @@ fun HomeScreen(
             },
 
             Modifier
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 20.dp,
-                )
+                .padding(16.dp)
                 .fillMaxWidth()
                 .background(colorScheme.background),
             shape = RoundedCornerShape(50.dp),
@@ -59,10 +54,10 @@ fun HomeScreen(
             Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp)
+            contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(sampleProducts) {products ->
-                CardProductItem(product = products)
+                CardProductItem(product = products,Modifier.padding(horizontal = 16.dp))
             }
 //            for (section in sections) {
 //                val title = section.key

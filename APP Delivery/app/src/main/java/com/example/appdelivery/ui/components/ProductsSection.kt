@@ -15,8 +15,12 @@ import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 @Composable
-fun ProductsSection(title: String, products: List<Product>) {
-    Column() {
+fun ProductsSection(
+    title: String,
+    products: List<Product>,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier) {
         Text(
             text = title,
             Modifier.padding(start = 16.dp, end = 16.dp),

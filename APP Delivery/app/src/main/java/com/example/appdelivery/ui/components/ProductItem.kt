@@ -23,16 +23,17 @@ import coil.compose.AsyncImage
 import com.example.appdelivery.R
 import com.example.appdelivery.extensions.toBrazilianCurrency
 import com.example.appdelivery.model.Product
-import com.example.appdelivery.ui.theme.AppDeliveryTheme
-import com.example.appdelivery.ui.theme.Red40
-import com.example.appdelivery.ui.theme.Red80
-import com.example.appdelivery.ui.theme.Yellow40
+import com.example.appdelivery.ui.theme.*
 import java.math.BigDecimal
 
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(
+    product: Product,
+    modifier: Modifier = Modifier,
+) {
     Surface(
+        modifier,
         shape = RoundedCornerShape(15.dp),
         shadowElevation = 4.dp,
     ) {
@@ -40,7 +41,7 @@ fun ProductItem(product: Product) {
             Modifier
                 .heightIn(250.dp, 300.dp)
                 .width(200.dp)
-                .background(colorScheme.onBackground)
+               .background(white40)
         ) {
             Box(
                 Modifier
@@ -91,7 +92,7 @@ fun ProductItem(product: Product) {
     }
 }
 
-@Preview(name = "ProductItem", showBackground = true)
+@Preview(name = "ProductItem", showBackground = true,)
 @Composable
 fun ProductItemPreview() {
     AppDeliveryTheme {

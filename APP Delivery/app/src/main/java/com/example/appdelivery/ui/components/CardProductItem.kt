@@ -32,7 +32,7 @@ fun CardProductItem(
         modifier
             .fillMaxWidth()
             .heightIn(150.dp),
-        elevation =  CardDefaults.cardElevation(
+        elevation = CardDefaults.cardElevation(
             defaultElevation = elevation
         )
     ) {
@@ -46,31 +46,31 @@ fun CardProductItem(
                 placeholder = painterResource(id = R.drawable.placeholder),
                 contentScale = ContentScale.Crop
             )
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .background(colorScheme.onPrimary)
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = product.name,
-                        color = colorScheme.secondary
-                    )
-                    Text(
-                        text = product.price.toBrazilianCurrency(),
-                        color = colorScheme.secondary
-                    )
-                }
-
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .background(colorScheme.onPrimary)
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = product.name,
+                    color = colorScheme.secondary
+                )
+                Text(
+                    text = product.price.toBrazilianCurrency(),
+                    color = colorScheme.tertiary
+                )
             }
+
         }
+    }
 }
 
 @Preview
 @Composable
 private fun CardProductItemPreview() {
     AppDeliveryTheme {
-       Surface {
+        Surface {
             CardProductItem(
                 product = sampleProducts.random(),
             )
