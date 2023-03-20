@@ -1,4 +1,3 @@
-
 package com.example.appdelivery.ui.screens
 
 import androidx.compose.foundation.background
@@ -18,15 +17,18 @@ import com.example.appdelivery.model.Product
 import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.sampledata.sampleSections
 import com.example.appdelivery.ui.components.CardProductItem
+import com.example.appdelivery.ui.components.ProductsSection
+import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    sections: Map<String, List<Product>>
+    sections: Map<String, List<Product>>,
+    searchText: String = "",
 ) {
     Column {
-        var text by remember { mutableStateOf("") }
+        var text by remember { mutableStateOf(searchText) }
 
         OutlinedTextField(
             text, { newValue ->
@@ -56,19 +58,29 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
-            items(sampleProducts) {products ->
-                CardProductItem(product = products,Modifier.padding(horizontal = 16.dp))
+
+            if (text.isBlank()) {
+                for (section in sections) {
+                    val title = section.key
+                    val products = section.value
+                    item {
+                        ProductsSection(
+                            title = title,
+                            products = products
+                        )
+                    }
+                }
+
+            } else {
+
+                items(sampleProducts) { products ->
+                    CardProductItem(
+                        products,
+                        Modifier.padding(horizontal = 16.dp),
+
+                        )
+                }
             }
-//            for (section in sections) {
-//                val title = section.key
-//                val products = section.value
-//                item {
-//                    ProductsSection(
-//                        title = title,
-//                        products = products
-//                    )
-//                }
-//            }
         }
     }
 }
@@ -77,4 +89,15 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(sampleSections)
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun HomeScreenWithSearchPreview() {
+    AppDeliveryTheme {
+            HomeScreen(
+                sampleSections,
+                searchText = "a",
+            )
+    }
 }

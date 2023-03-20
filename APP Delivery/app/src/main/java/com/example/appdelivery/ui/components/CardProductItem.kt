@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,13 +20,15 @@ import com.example.appdelivery.extensions.toBrazilianCurrency
 import com.example.appdelivery.model.Product
 import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
+import java.math.BigDecimal
 
 @Composable
 fun CardProductItem(
     product: Product,
     modifier: Modifier = Modifier,
-    elevation: Dp = 6.dp
-) {
+    elevation: Dp = 4.dp,
+
+    ) {
     Card(
         modifier
             .fillMaxWidth()
@@ -61,6 +62,12 @@ fun CardProductItem(
                     color = colorScheme.tertiary
                 )
             }
+            product.description?.let {
+                Text(
+                    text = product.description,
+                    Modifier.padding(16.dp)
+                )
+            }
 
         }
     }
@@ -70,11 +77,22 @@ fun CardProductItem(
 @Composable
 private fun CardProductItemPreview() {
     AppDeliveryTheme {
-        Surface {
-            CardProductItem(
-                product = sampleProducts.random(),
-            )
-        }
+        CardProductItem(
+            product = Product(
+                name = "teste",
+                price = BigDecimal("9.99")
+            ),
+        )
+    }
+}
+
+@Preview
+@Composable
+fun CardProductItemWithDescriptionPreview() {
+    AppDeliveryTheme {
+        CardProductItem(
+            product = sampleProducts.random(),
+        )
     }
 }
 
