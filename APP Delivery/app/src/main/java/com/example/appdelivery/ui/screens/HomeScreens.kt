@@ -37,10 +37,11 @@ fun HomeScreen(
                     product.name.contains(
                         text,
                         ignoreCase = true,
-                    ) || product.description?.contains(
-                        text,
-                        ignoreCase = true,
-                    ) ?: false
+                    )
+//                            || product.description?.contains(
+//                        text,
+//                        ignoreCase = true,
+//                    ) ?: false
                 }
             } else emptyList()
         }
