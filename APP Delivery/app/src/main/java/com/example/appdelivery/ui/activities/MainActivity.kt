@@ -1,4 +1,4 @@
-package com.example.appdelivery
+package com.example.appdelivery.ui.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
