@@ -1,6 +1,7 @@
 package com.example.appdelivery.ui.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -14,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.appdelivery.model.Product
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
+import java.math.BigDecimal
 
 class ProductFormActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,9 +103,22 @@ fun ProductFormScreen() {
         )
 
         Button(
-            onClick = { },
+            onClick = {
+                val convertPrice = try {
+                    BigDecimal(price)
+                } catch (e: NumberFormatException) {
+                    BigDecimal.ZERO
+                }
+                val product = Product(
+                    name = name,
+                    image = url,
+                    price = convertPrice,
+                    description = description
+                )
+                Log.i("ProductFormActivity", "ProductFormScreen: $product")
+            },
             Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(size = 8.dp),
         ) {
             Text(text = "Salvar")
         }
