@@ -26,6 +26,7 @@ import com.example.appdelivery.model.Product
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 import java.math.BigDecimal
 
+
 class ProductFormActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +69,7 @@ fun ProductFormScreen() {
                 error = painterResource(id = R.drawable.placeholder)
             )
         }
+
         TextField(
             value = url,
             onValueChange = {
@@ -105,10 +107,22 @@ fun ProductFormScreen() {
         var price by remember {
             mutableStateOf("")
         }
+        val pattern = remember {
+            Regex("^\\d*\\.?\\d*\$")
+        }
+
         TextField(
             value = price,
             onValueChange = {
-                price = it
+                try {
+                    if (it.matches(pattern)) {
+                        price = it.format(BigDecimal(it))
+                    }
+                } catch (e: IllegalArgumentException) {
+                    if (it.isBlank()) {
+                        price = it
+                    }
+                }
             },
             Modifier.fillMaxWidth(),
             label = {
@@ -153,17 +167,19 @@ fun ProductFormScreen() {
                     price = convertPrice,
                     description = description
                 )
-                Log.i("ProductFormActivity", "ProductFormScreen: $product")
+                Log.i("onclick", "ProductFormScreen: $product")
             },
             Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(size = 8.dp),
         ) {
-            Text(text = "Salvar", color = MaterialTheme.colorScheme.secondary)
-
+            Text(
+                text = "Salvar",
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 18.sp,
+            )
         }
         Spacer(modifier = Modifier)
     }
-
 }
 
 @Preview(showSystemUi = true)
