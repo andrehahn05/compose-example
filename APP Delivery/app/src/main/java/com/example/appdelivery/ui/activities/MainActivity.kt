@@ -13,11 +13,15 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.appdelivery.sampledata.sampleSections
+import com.example.appdelivery.dao.ProductDao
+import com.example.appdelivery.sampledata.sampleCandies
+import com.example.appdelivery.sampledata.sampleDrinks
+import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.ui.screens.HomeScreen
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 class MainActivity : ComponentActivity() {
+    private val dao = ProductDao()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -33,7 +37,16 @@ class MainActivity : ComponentActivity() {
                                 ProductFormActivity::class.java
                             )
                         )
-                    })
+                    }) {
+                        dao.products()
+                        val sections = mapOf(
+                            "Promoções" to sampleDrinks + sampleCandies,
+                            "Salgados" to sampleProducts,
+                            "Doces" to sampleCandies,
+                            "Bebidas" to sampleDrinks
+                        )
+                        HomeScreen(sections = sections)
+                    }
                 }
             }
         }
@@ -43,11 +56,15 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(onFabClick: () -> Unit) {
+fun App(
+    onFabClick: () -> Unit,
+    content: @Composable () -> Unit = {},
+) {
     AppDeliveryTheme {
         Surface {
             Scaffold(floatingActionButton = {
-                FloatingActionButton(onClick = onFabClick,
+                FloatingActionButton(
+                    onClick = onFabClick,
                     containerColor = colorScheme.surfaceColorAtElevation(4.dp),
                     contentColor = colorScheme.primary
                 ) {
@@ -58,9 +75,7 @@ fun App(onFabClick: () -> Unit) {
                 }
             }) { paddingValues ->
                 Box(modifier = Modifier.padding(paddingValues)) {
-
-                    HomeScreen(sampleSections)
-
+                    content()
                 }
             }
         }
