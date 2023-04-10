@@ -37,7 +37,7 @@ fun SearchTextField(
             .padding(16.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background),
-        shape = RoundedCornerShape(50.dp),
+        shape = RoundedCornerShape(50.dp), 
         maxLines = 1,
 
         leadingIcon = {
@@ -76,5 +76,3 @@ private fun SearchTextFieldPreview() {
         )
     }
 }
-
-
