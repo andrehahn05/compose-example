@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.example.appdelivery.ui.activities
 
 import android.os.Bundle
@@ -22,17 +24,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.appdelivery.R
+import com.example.appdelivery.dao.ProductDao
 import com.example.appdelivery.model.Product
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 import java.math.BigDecimal
 
 
 class ProductFormActivity : ComponentActivity() {
+
+    private val dao = ProductDao()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AppDeliveryTheme {
-                ProductFormScreen()
+                ProductFormScreen(onSaveClick = { product ->
+                    dao.save(product)
+                    finish()
+                })
             }
         }
     }
@@ -40,7 +48,9 @@ class ProductFormActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductFormScreen() {
+fun ProductFormScreen(
+    onSaveClick: (Product) -> Unit = {}
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -48,12 +58,14 @@ fun ProductFormScreen() {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+
         Spacer(modifier = Modifier)
         Text(
             text = "Criando o Produto",
             Modifier.fillMaxWidth(),
-            fontSize = 28.sp
+            fontSize = 28.sp,
         )
+
         var url by remember {
             mutableStateOf("")
         }
@@ -70,19 +82,14 @@ fun ProductFormScreen() {
             )
         }
 
-        TextField(
-            value = url,
-            onValueChange = {
-                url = it
-            },
-            Modifier.fillMaxWidth(),
-            label = {
-                Text(text = "Url da imagem")
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Uri,
-                imeAction = ImeAction.Next
-            )
+        TextField(value = url, onValueChange = {
+            url = it
+        }, Modifier.fillMaxWidth(), label = {
+            Text(text = "Url da imagem")
+        }, keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Uri,
+            imeAction = ImeAction.Next,
+        )
         )
 
         var name by remember {
@@ -100,8 +107,8 @@ fun ProductFormScreen() {
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
-                capitalization = KeyboardCapitalization.Words
-            )
+                capitalization = KeyboardCapitalization.Words,
+            ),
         )
 
         var price by remember {
@@ -110,7 +117,6 @@ fun ProductFormScreen() {
         val pattern = remember {
             Regex("^\\d*\\.?\\d*\$")
         }
-
         TextField(
             value = price,
             onValueChange = {
@@ -130,8 +136,8 @@ fun ProductFormScreen() {
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
-                imeAction = ImeAction.Next
-            )
+                imeAction = ImeAction.Next,
+            ),
         )
 
         var description by remember {
@@ -150,8 +156,8 @@ fun ProductFormScreen() {
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
-                capitalization = KeyboardCapitalization.Sentences
-            )
+                capitalization = KeyboardCapitalization.Sentences,
+            ),
         )
 
         Button(
@@ -165,9 +171,11 @@ fun ProductFormScreen() {
                     name = name,
                     image = url,
                     price = convertPrice,
-                    description = description
+                    description = description,
                 )
+
                 Log.i("onclick", "ProductFormScreen: $product")
+                onSaveClick(product)
             },
             Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(size = 8.dp),
@@ -178,6 +186,7 @@ fun ProductFormScreen() {
                 fontSize = 18.sp,
             )
         }
+
         Spacer(modifier = Modifier)
     }
 }

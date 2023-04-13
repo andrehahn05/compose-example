@@ -33,8 +33,7 @@ class MainActivity : ComponentActivity() {
                     App(onFabClick = {
                         startActivity(
                             Intent(
-                                this,
-                                ProductFormActivity::class.java
+                                this, ProductFormActivity::class.java
                             )
                         )
                     }) {
