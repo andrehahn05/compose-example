@@ -1,6 +1,6 @@
 package com.example.appdelivery.ui.screens
 
-import com.example.appdelivery.ui.components.SearchTextField
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,40 +13,48 @@ import com.example.appdelivery.sampledata.sampleProducts
 import com.example.appdelivery.sampledata.sampleSections
 import com.example.appdelivery.ui.components.CardProductItem
 import com.example.appdelivery.ui.components.ProductsSection
+import com.example.appdelivery.ui.components.SearchTextField
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
+class HomeScreenUiState(searchText: String = ""){
+    var text by mutableStateOf(searchText)
+    
+    val searchedProducts get() =
+        if (text.isNotBlank()) {
+            sampleProducts.filter { product ->
+                product.name.contains(
+                    text,
+                    ignoreCase = true,
+                )
+            }
+        } else emptyList()
+
+    fun isShowSections():Boolean {
+        return text.isBlank()
+    }
+
+    val onSearchChange: (String) -> Unit = { searchText ->
+        text = searchText
+    }
+}
 
 @Composable
 fun HomeScreen(
     sections: Map<String, List<Product>>,
-    searchText: String = ""
+    state: HomeScreenUiState= HomeScreenUiState()
 ) {
     Column {
-        var text by remember { mutableStateOf(searchText) }
+        val text = state.text
+        val searchedProducts = remember(text) {
+              state.searchedProducts
+        }
         SearchTextField(
             searchText = text,
-            onSearchChange = {
-                text = it
-            },
+            onSearchChange = state.onSearchChange,
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
         )
-
-        val searchedProducts = remember(text) {
-            if (text.isNotBlank()) {
-
-                sampleProducts.filter { product ->
-                    product.name.contains(
-                        text,
-                        ignoreCase = true,
-                    )
-//                            || product.description?.contains(
-//                        text,
-//                        ignoreCase = true,
-//                    ) ?: false
-                }
-            } else emptyList()
-        }
-
-
 
         LazyColumn(
             Modifier.fillMaxSize(),
@@ -54,7 +62,7 @@ fun HomeScreen(
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
 
-            if (text.isBlank()) {
+            if (state.isShowSections()) {
                 for (section in sections) {
                     val title = section.key
                     val products = section.value
@@ -66,13 +74,11 @@ fun HomeScreen(
                 }
 
             } else {
-
                 items(searchedProducts) { products ->
                     CardProductItem(
                         products,
                         Modifier.padding(horizontal = 16.dp),
-
-                        )
+                    )
                 }
             }
         }
@@ -91,7 +97,7 @@ fun HomeScreenWithSearchPreview() {
     AppDeliveryTheme {
         HomeScreen(
             sampleSections,
-            searchText = "a",
+            state = HomeScreenUiState(searchText = "a"),
         )
     }
 }
