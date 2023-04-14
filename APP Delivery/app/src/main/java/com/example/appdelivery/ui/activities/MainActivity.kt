@@ -12,12 +12,12 @@ import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.appdelivery.dao.ProductDao
-import com.example.appdelivery.sampledata.sampleCandies
-import com.example.appdelivery.sampledata.sampleDrinks
-import com.example.appdelivery.sampledata.sampleProducts
+import com.example.appdelivery.sampledata.sampleSections
 import com.example.appdelivery.ui.screens.HomeScreen
+import com.example.appdelivery.ui.screens.HomeScreenUiState
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
             AppDeliveryTheme {
                 Surface(
                     color = colorScheme.background,
-
                     ) {
                     App(onFabClick = {
                         startActivity(
@@ -37,14 +36,8 @@ class MainActivity : ComponentActivity() {
                             )
                         )
                     }) {
-                        dao.products()
-                        val sections = mapOf(
-                            "Promoções" to sampleDrinks + sampleCandies,
-                            "Salgados" to sampleProducts,
-                            "Doces" to sampleCandies,
-                            "Bebidas" to sampleDrinks
-                        )
-                        HomeScreen(sections = sections)
+                        val products = dao.products()
+                        HomeScreen(products = products)
                     }
                 }
             }
@@ -56,7 +49,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
-    onFabClick: () -> Unit,
+    onFabClick: () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
     AppDeliveryTheme {
@@ -64,8 +57,8 @@ fun App(
             Scaffold(floatingActionButton = {
                 FloatingActionButton(
                     onClick = onFabClick,
-                    containerColor = colorScheme.surfaceColorAtElevation(4.dp),
-                    contentColor = colorScheme.primary
+                    containerColor = colorScheme.primaryContainer,
+                    contentColor = Color.Black,
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -78,5 +71,13 @@ fun App(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun AppPreview() {
+    App {
+        HomeScreen(HomeScreenUiState(sections = sampleSections))
     }
 }

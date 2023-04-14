@@ -86,10 +86,11 @@ fun ProductFormScreen(
             url = it
         }, Modifier.fillMaxWidth(), label = {
             Text(text = "Url da imagem")
-        }, keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Uri,
-            imeAction = ImeAction.Next,
-        )
+        },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Uri,
+                imeAction = ImeAction.Next,
+            )
         )
 
         var name by remember {
@@ -173,7 +174,6 @@ fun ProductFormScreen(
                     price = convertPrice,
                     description = description,
                 )
-
                 Log.i("onclick", "ProductFormScreen: $product")
                 onSaveClick(product)
             },

@@ -2,7 +2,6 @@ package com.example.appdelivery.dao
 
 import androidx.compose.runtime.mutableStateListOf
 import com.example.appdelivery.model.Product
-import com.example.appdelivery.sampledata.sampleProducts
 
 class ProductDao {
     companion object {

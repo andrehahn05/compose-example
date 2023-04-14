@@ -51,7 +51,10 @@ fun SearchTextField(
             Text(text = "O que você procura?")
         },
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Text,
+        ),
     )
 }
 
