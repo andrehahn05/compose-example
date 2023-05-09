@@ -2,12 +2,14 @@ package com.example.appdelivery.ui.components
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -27,16 +29,23 @@ fun CardProductItem(
     product: Product,
     modifier: Modifier = Modifier,
     elevation: Dp = 4.dp,
-
-    ) {
+    isExpanded: Boolean = false
+) {
+    var expanded by rememberSaveable {
+        mutableStateOf(isExpanded)
+    }
     Card(
         modifier
             .fillMaxWidth()
-            .heightIn(150.dp),
+            .heightIn(150.dp)
+            .clickable {
+                expanded = !expanded
+            },
         elevation = CardDefaults.cardElevation(
             defaultElevation = elevation
-        )
-    ) {
+        ),
+
+        ) {
         Column {
             AsyncImage(
                 model = product.image,
@@ -48,7 +57,7 @@ fun CardProductItem(
                 contentScale = ContentScale.Crop
             )
             Column(
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .background(colorScheme.onPrimary)
                     .padding(16.dp)
@@ -62,16 +71,18 @@ fun CardProductItem(
                     color = colorScheme.tertiary
                 )
             }
-            product.description?.let {
-                Text(
-                    text = product.description,
-                    Modifier.padding(16.dp)
-                )
+            if (expanded) {
+                product.description?.let {
+                    Text(
+                        text = product.description,
+                        Modifier.padding(16.dp)
+                    )
+                }
             }
-
         }
     }
 }
+
 
 @Preview
 @Composable
@@ -95,4 +106,3 @@ fun CardProductItemWithDescriptionPreview() {
         )
     }
 }
-
