@@ -53,7 +53,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
         mutableStateOf("")
     }
     val pattern = remember {
-        Regex("^\\d{1,4}(\\.\\d{1,2})?$")
+        Regex("^\\d{1,3}(\\.\\d{1,2})?$")
     }
 
     ProductFormScreen(
