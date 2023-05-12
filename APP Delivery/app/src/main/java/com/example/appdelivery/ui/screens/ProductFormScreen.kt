@@ -23,6 +23,7 @@ import com.example.appdelivery.R
 import com.example.appdelivery.model.Product
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class ProductFormUiState(
     val url: String = "",
@@ -52,7 +53,7 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
         mutableStateOf("")
     }
     val pattern = remember {
-        Regex("^\\d*\\.?\\d*\$")
+        Regex("^\\d{1,4}(\\.\\d{1,2})?$")
     }
 
     ProductFormScreen(
@@ -69,12 +70,17 @@ fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
             },
             onPriceChange = {
                 try {
-                    val maxDigits = 6
-                    if (it.length <= maxDigits) {
-                        if (it.matches(pattern)) {
-                            price = it.format(BigDecimal(it))
-                        }
+                    if (it.matches(pattern) || it.isEmpty()) {
+
+                        val decimalInput = it.toBigDecimal()
+
+                        val formattedPrice = decimalInput.setScale(
+                            2, RoundingMode.HALF_EVEN
+                        ).toString()
+
+                        price = formattedPrice
                     }
+
                 } catch (e: IllegalArgumentException) {
                     if (it.isBlank()) {
                         price = it
