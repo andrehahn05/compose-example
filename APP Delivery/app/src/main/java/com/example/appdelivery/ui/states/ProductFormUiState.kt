@@ -9,7 +9,6 @@ data class ProductFormUiState(
     val onNameChange: (String) -> Unit = {},
     val onPriceChange: (String) -> Unit = {},
     val onDescriptionChange: (String) -> Unit = {},
-//    val onSaveClick: () -> Unit = {},
 ) {
     val isShowPreview: Boolean get() = url.isNotBlank()
 }

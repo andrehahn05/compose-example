@@ -1,6 +1,5 @@
 package com.example.appdelivery.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,7 +7,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -20,89 +18,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.appdelivery.R
-import com.example.appdelivery.model.Product
+import com.example.appdelivery.ui.states.ProductFormUiState
 import com.example.appdelivery.ui.theme.AppDeliveryTheme
-import java.math.BigDecimal
-import java.math.RoundingMode
-
+import com.example.appdelivery.ui.viewmodels.ProductFormScreenViewModel
 
 
 @Composable
-fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
-    var name by rememberSaveable {
-        mutableStateOf("")
-    }
-    var url by rememberSaveable {
-        mutableStateOf("")
-    }
-    var price by rememberSaveable {
-        mutableStateOf("")
-    }
-    var description by rememberSaveable {
-        mutableStateOf("")
-    }
-    val pattern = remember {
-        Regex("^\\d{1,3}(\\.\\d+)?$")
-    }
-
+fun ProductFormScreen(
+    viewModel: ProductFormScreenViewModel,
+    onSaveClick: () -> Unit = {}
+) {
+    val state by viewModel.uiState.collectAsState()
     ProductFormScreen(
-        state = ProductFormUiState(
-            url = url,
-            name = name,
-            price = price,
-            description = description,
-            onUrlChange = {
-                url = it
-            },
-            onNameChange = {
-                name = it
-            },
-            onPriceChange = {
-                try {
-                    if (it.matches(pattern) || it.isEmpty()) {
-
-                        val decimalInput = it.toBigDecimal()
-
-                        val formattedPrice = decimalInput.setScale(
-                            2, RoundingMode.HALF_EVEN
-                        ).toString()
-
-                        price = formattedPrice
-                    }
-
-                } catch (e: IllegalArgumentException) {
-                    if (it.isBlank()) {
-                        price = it
-                    }
-                }
-            },
-            onDescriptionChange = {
-                description = it
-            },
-            onSaveClick = {
-                val convertPrice = try {
-                    BigDecimal(price)
-                } catch (e: NumberFormatException) {
-                    BigDecimal.ZERO
-                }
-                val product = Product(
-                    name = name,
-                    image = url,
-                    price = convertPrice,
-                    description = description,
-                )
-                Log.i("onclick", "ProductFormScreen: $product")
-                onSaveClick(product)
-            },
-        )
-    )
+        state = state
+    ) {
+        viewModel.save()
+        onSaveClick()
+    }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductFormScreen(
-    state: ProductFormUiState = ProductFormUiState()
+    state: ProductFormUiState = ProductFormUiState(),
+    onSaveClick: () -> Unit = {}
 ) {
     val url = state.url
     val name = state.name
@@ -115,15 +54,12 @@ fun ProductFormScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
         Spacer(modifier = Modifier)
         Text(
             text = "Criando o Produto",
             Modifier.fillMaxWidth(),
             fontSize = 28.sp,
         )
-
-
         if (state.isShowPreview) {
             AsyncImage(
                 model = url,
@@ -151,7 +87,6 @@ fun ProductFormScreen(
         TextField(
             value = name,
             onValueChange = state.onNameChange,
-
             Modifier.fillMaxWidth(),
             label = {
                 Text(text = "Nome")
@@ -189,7 +124,7 @@ fun ProductFormScreen(
             ),
         )
         Button(
-            onClick = state.onSaveClick,
+            onClick = onSaveClick,
             Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(size = 8.dp),
         ) {
@@ -199,7 +134,6 @@ fun ProductFormScreen(
                 fontSize = 18.sp,
             )
         }
-
         Spacer(modifier = Modifier)
     }
 }
