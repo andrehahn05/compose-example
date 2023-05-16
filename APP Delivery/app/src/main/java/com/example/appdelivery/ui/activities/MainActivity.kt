@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.appdelivery.dao.ProductDao
 import com.example.appdelivery.sampledata.sampleSections
 import com.example.appdelivery.ui.screens.HomeScreen
 import com.example.appdelivery.ui.states.HomeScreenUiState
