@@ -23,8 +23,8 @@ import com.example.panucci.ui.theme.PanucciTheme
 
 @Composable
 fun DrinkProductCard(
+	product: Product,
 	modifier: Modifier = Modifier,
-	product: Product
 ) {
 	Card(
 		modifier
