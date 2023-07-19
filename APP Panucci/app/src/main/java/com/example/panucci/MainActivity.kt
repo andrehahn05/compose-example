@@ -1,8 +1,8 @@
 package com.example.panucci
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,74 +13,80 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.panucci.sampledata.bottomAppBarItems
-import com.example.panucci.sampledata.sampleProductWithImage
 import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.ui.components.BottomAppBarItem
+import com.example.panucci.ui.components.MenuProductCard
 import com.example.panucci.ui.components.PanucciBottomAppBar
-import com.example.panucci.ui.screens.CheckoutScreen
 import com.example.panucci.ui.screens.DrinksListScreen
 import com.example.panucci.ui.screens.HighlightsListScreen
 import com.example.panucci.ui.screens.MenuProductScreen
-import com.example.panucci.ui.screens.ProductDetailsScreen
 import com.example.panucci.ui.theme.PanucciTheme
+import kotlinx.coroutines.flow.map
 
-class MainActivity: ComponentActivity() {
+class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
-			val initialScreen = "Destaques"
-			val screens = remember {
-				mutableStateListOf(initialScreen)
+			val navController = rememberNavController()
+			LaunchedEffect(Unit) {
+				navController.addOnDestinationChangedListener{ _, _, _ ->
+					val routes = navController.backQueue.map {
+						it.destination.route
+					}
+					Log.i("MainActivity","onCreate: back stack - $routes")
+				}
 			}
-			val currentScreen = screens.last()
-			BackHandler(screens.size > 1) {
-				screens.removeLast()
-			}
+			val backStackEntryState by navController.currentBackStackEntryAsState()
+			val currentDestination = backStackEntryState?.destination
 			PanucciTheme {
 				Surface(
 					modifier = Modifier.fillMaxSize(),
 					color = MaterialTheme.colorScheme.background
 				) {
-					var selectedItem by remember(currentScreen) {
-						val item = bottomAppBarItems.find { currentScreen == it.label }
+					val selectedItem by remember(currentDestination) {
+						val item = currentDestination?.let { destination ->
+							bottomAppBarItems.find {
+								it.route == destination.route
+							}
+						} ?: bottomAppBarItems.first()
 						mutableStateOf(item)
 					}
 					PanucciApp(
-						 bottomAppBarItemSelected = selectedItem ?: bottomAppBarItems.first(),
-						 onBottomAppBarItemSelectedChange = {
-							 selectedItem = it
-							 screens.add(it.label)
-						 },
-						 onFabClick = {
-							 screens.add("Pedido")
-						 }) {
-						  when (currentScreen) {
-							  "Destaques" -> HighlightsListScreen(
-								  products = sampleProducts,
-								  onOrderClick = {
-									  screens.add("Pedido")
-								  },
-								  onProductClick = {
-									  screens.add("DetalhesProduto")
-								  }
-							  )
-							  "Menu" -> MenuProductScreen(
-								  products = sampleProducts
-							  )
-							  "Bebidas" -> DrinksListScreen(
-								  products = sampleProducts + sampleProducts
-							  )
-							  "DetalhesProduto" -> ProductDetailsScreen(
-								  product = sampleProductWithImage
-							  )
-							  "Pedido" -> CheckoutScreen(products = sampleProducts)
-						  }
+						bottomAppBarItemSelected = selectedItem,
+						onBottomAppBarItemSelectedChange = {
+							val route = it.route
+							navController.navigate(route) {
+								launchSingleTop = true
+								popUpTo(route)
+							}
+						},
+						onFabClick = {
+						}) {
+						NavHost(
+							navController = navController,
+							startDestination = "highlight"
+						) {
+							composable("highlight") {
+								HighlightsListScreen(products = sampleProducts)
+							}
+							composable("menu") {
+								MenuProductScreen(products = sampleProducts)
+							}
+							composable("drinks") {
+								DrinksListScreen(products = sampleProducts)
+							}
+						}
 					}
 				}
 			}
 		}
 	}
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +95,7 @@ fun PanucciApp(
 	bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
 	onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
 	onFabClick: () -> Unit = {},
-	content: @Composable () -> Unit,
+	content: @Composable () -> Unit
 ) {
 	Scaffold(
 		topBar = {
@@ -125,12 +131,12 @@ fun PanucciApp(
 	}
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun PanucciAppPreview() {
+private fun PanucciAppPreview() {
 	PanucciTheme {
 		Surface {
-			PanucciApp{}
+			PanucciApp {}
 		}
 	}
 }
