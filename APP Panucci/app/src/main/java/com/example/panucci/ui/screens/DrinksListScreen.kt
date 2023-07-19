@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Surface
@@ -45,10 +45,8 @@ fun DrinksListScreen(
 			    )
 		  }
 		LazyVerticalStaggeredGrid(
-			columns = StaggeredGridCells.Fixed(col),
-			modifier.fillMaxWidth(),
-			contentPadding = PaddingValues(16.dp),
-			verticalArrangement = Arrangement.spacedBy(16.dp),
+			StaggeredGridCells.Fixed(col),contentPadding = PaddingValues(16.dp),
+			verticalItemSpacing = Arrangement.spacedBy(16.dp),
 			horizontalArrangement = Arrangement.spacedBy(16.dp),
 		){
 		   items(products) { p ->
@@ -60,6 +58,14 @@ fun DrinksListScreen(
 	}
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+fun LazyVerticalStaggeredGrid(
+	columns: StaggeredGridCells.Fixed,
+	contentPadding: PaddingValues,
+	verticalItemSpacing: Arrangement.HorizontalOrVertical,
+	horizontalArrangement: Arrangement.HorizontalOrVertical,
+	content: LazyStaggeredGridScope.() -> Unit
+) {}
 
 @Preview
 @Composable
