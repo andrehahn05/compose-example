@@ -17,16 +17,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.panucci.sampledata.bottomAppBarItems
+import com.example.panucci.navigation.AppDestination
+import com.example.panucci.sampledata.sampleProducts
+import com.example.panucci.navigation.bottomAppBarItems
 import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.ui.components.BottomAppBarItem
-import com.example.panucci.ui.components.MenuProductCard
 import com.example.panucci.ui.components.PanucciBottomAppBar
+import com.example.panucci.ui.screens.CheckoutScreen
 import com.example.panucci.ui.screens.DrinksListScreen
 import com.example.panucci.ui.screens.HighlightsListScreen
 import com.example.panucci.ui.screens.MenuProductScreen
+import com.example.panucci.ui.screens.ProductDetailsScreen
 import com.example.panucci.ui.theme.PanucciTheme
-import kotlinx.coroutines.flow.map
 
 class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +53,7 @@ class MainActivity : ComponentActivity() {
 					val selectedItem by remember(currentDestination) {
 						val item = currentDestination?.let { destination ->
 							bottomAppBarItems.find {
-								it.route == destination.route
+								it.destination.route == destination.route
 							}
 						} ?: bottomAppBarItems.first()
 						mutableStateOf(item)
@@ -59,35 +61,66 @@ class MainActivity : ComponentActivity() {
 					PanucciApp(
 						bottomAppBarItemSelected = selectedItem,
 						onBottomAppBarItemSelectedChange = {
-							val route = it.route
+							val route = it.destination.route
 							navController.navigate(route) {
 								launchSingleTop = true
 								popUpTo(route)
 							}
 						},
 						onFabClick = {
+							navController.navigate(AppDestination.Checkout.route)
 						}) {
 						NavHost(
 							navController = navController,
-							startDestination = "highlight"
+							startDestination = AppDestination.Highlight.route
 						) {
-							composable("highlight") {
-								HighlightsListScreen(products = sampleProducts)
+							composable(AppDestination.Highlight.route) {
+								HighlightsListScreen(
+									products = sampleProducts,
+									onNavigateToDetails = {
+										navController.navigate(AppDestination.ProductDetails.route)
+									},
+									onNavigateToCheckout = {
+										navController.navigate(AppDestination.Checkout.route)
+									},
+								)
 							}
-							composable("menu") {
-								MenuProductScreen(products = sampleProducts)
+							composable(AppDestination.Menu.route) {
+								MenuProductScreen(
+									products = sampleProducts,
+									onNavigateToDetails = {
+										navController.navigate(AppDestination.ProductDetails.route)
+									},
+								)
 							}
-							composable("drinks") {
-								DrinksListScreen(products = sampleProducts)
+							composable(AppDestination.Drinks.route) {
+								DrinksListScreen(
+									products = sampleProducts,
+								) {
+									navController.navigate(AppDestination.ProductDetails.route)
+								}
+							}
+							composable(AppDestination.ProductDetails.route) {
+								ProductDetailsScreen(
+									product = sampleProducts.random(),
+								) {
+									navController.navigate(AppDestination.Checkout.route)
+								}
+							}
+							composable(AppDestination.Checkout.route) {
+								CheckoutScreen(products = sampleProducts)
 							}
 						}
 					}
+
 				}
 			}
 		}
 	}
 
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,6 +1,7 @@
 package com.example.panucci.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ fun DrinksListScreen(
 	title: String = "Bebidas",
 	products: List<Product> = emptyList(),
 	col: Int = 2,
+	onNavigateToDetails: () -> Unit,
 ) {
 	Column(modifier.fillMaxWidth()) {
 		  Surface {
@@ -45,13 +47,18 @@ fun DrinksListScreen(
 			    )
 		  }
 		LazyVerticalStaggeredGrid(
-			StaggeredGridCells.Fixed(col),contentPadding = PaddingValues(16.dp),
+			columns = StaggeredGridCells.Fixed(col),
+			Modifier.fillMaxSize(),
+			contentPadding = PaddingValues(16.dp),
 			verticalItemSpacing = Arrangement.spacedBy(16.dp),
 			horizontalArrangement = Arrangement.spacedBy(16.dp),
 		){
 		   items(products) { p ->
 			   DrinkProductCard(
-				   product = p
+				   product = p,
+				   Modifier.clickable {
+					   onNavigateToDetails()
+				   }
 			   )
 		   }
 		}
@@ -59,13 +66,16 @@ fun DrinksListScreen(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun LazyVerticalStaggeredGrid(
+ fun ColumnScope.LazyVerticalStaggeredGrid(
 	columns: StaggeredGridCells.Fixed,
+	contentPadding1: Modifier,
 	contentPadding: PaddingValues,
 	verticalItemSpacing: Arrangement.HorizontalOrVertical,
 	horizontalArrangement: Arrangement.HorizontalOrVertical,
-	content: LazyStaggeredGridScope.() -> Unit
-) {}
+	content: LazyStaggeredGridScope.() -> Unit,
+) { }
+
+
 
 @Preview
 @Composable
@@ -73,9 +83,9 @@ fun DrinksListScreenPreview() {
 	PanucciTheme {
 		Surface {
 			DrinksListScreen(
-				products = sampleProducts,
-				title = "Bebidas"
-			)
+				title = "Bebidas",
+				products = sampleProducts
+			) {}
 		}
 	}
 }

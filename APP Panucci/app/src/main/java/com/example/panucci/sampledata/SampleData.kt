@@ -1,14 +1,10 @@
 package com.example.panucci.sampledata
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.RestaurantMenu
-import androidx.compose.material.icons.outlined.LocalBar
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.example.panucci.model.Product
-import com.example.panucci.ui.components.BottomAppBarItem
 import java.math.BigDecimal
 import kotlin.random.Random
+
 
 private val loremName = LoremIpsum(Random.nextInt(10)).values.first()
 private val loremDesc = LoremIpsum(Random.nextInt(30)).values.first()
@@ -35,20 +31,20 @@ val sampleProducts = List(10) { index ->
 	)
 }
 
-val bottomAppBarItems = listOf(
-	BottomAppBarItem(
-		label = "Destaques",
-		icon = Icons.Filled.AutoAwesome,
-		route = "highlight"
-	),
-	BottomAppBarItem(
-		label = "Menu",
-		icon = Icons.Filled.RestaurantMenu,
-		route = "menu",
-	),
-	BottomAppBarItem(
-		label = "Bebidas",
-		icon = Icons.Outlined.LocalBar,
-		route = "drinks"
-	),
-)
+//val bottomAppBarItems = listOf(
+//	BottomAppBarItem(
+//		label = "Destaques",
+//		icon = Icons.Filled.AutoAwesome,
+//		destination = AppDestination.Highlight
+//	),
+//	BottomAppBarItem(
+//		label = "Menu",
+//		icon = Icons.Filled.RestaurantMenu,
+//		destination = AppDestination.Highlight,
+//	),
+//	BottomAppBarItem(
+//		label = "Bebidas",
+//		icon = Icons.Outlined.LocalBar,
+//		destination = AppDestination.Highlight
+//	),
+//)

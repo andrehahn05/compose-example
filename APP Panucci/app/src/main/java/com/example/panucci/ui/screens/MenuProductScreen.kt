@@ -1,5 +1,6 @@
 package com.example.panucci.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.example.panucci.model.Product
 import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.ui.components.MenuProductCard
-import com.example.panucci.ui.components.MenuProductCardPreview
 import com.example.panucci.ui.theme.PanucciTheme
 import com.example.panucci.ui.theme.caveatFont
 
@@ -27,7 +27,8 @@ import com.example.panucci.ui.theme.caveatFont
 fun MenuProductScreen(
 	modifier: Modifier = Modifier,
 	products: List<Product> = emptyList(),
-	title: String = "Menu"
+	title: String = "Menu",
+	onNavigateToDetails: () -> Unit = {}
 ) {
 	Column(modifier.fillMaxWidth()) {
 		Surface {
@@ -49,7 +50,11 @@ fun MenuProductScreen(
 		) {
 			items(products) { p ->
 				MenuProductCard(
-					product = p
+					product = p,
+					modifier = Modifier
+						.clickable {
+							onNavigateToDetails()
+						}
 				)
 			}
 		}
@@ -63,7 +68,6 @@ fun MenuProductScreenPreview() {
 		Surface {
 			MenuProductScreen(
 				products = sampleProducts,
-				title = "Menu"
 			)
 		}
 	}
