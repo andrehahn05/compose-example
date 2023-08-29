@@ -44,8 +44,9 @@ fun DrinkProductCard(
 		}
 		Column(
 			modifier
-				.fillMaxWidth()
 				.padding(16.dp)
+				.fillMaxWidth()
+				
 		) {
 			Text(
 				text = product.name,
