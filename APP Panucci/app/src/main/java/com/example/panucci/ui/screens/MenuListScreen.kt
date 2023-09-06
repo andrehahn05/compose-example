@@ -24,11 +24,11 @@ import com.example.panucci.ui.theme.PanucciTheme
 import com.example.panucci.ui.theme.caveatFont
 
 @Composable
-fun MenuProductScreen(
+fun MenuListScreen(
 	modifier: Modifier = Modifier,
 	products: List<Product> = emptyList(),
 	title: String = "Menu",
-	onNavigateToDetails: () -> Unit = {}
+	onNavigateToDetails: (Product) -> Unit = {},
 ) {
 	Column(modifier.fillMaxWidth()) {
 		Surface {
@@ -53,7 +53,7 @@ fun MenuProductScreen(
 					product = p,
 					modifier = Modifier
 						.clickable {
-							onNavigateToDetails()
+							onNavigateToDetails(p)
 						}
 				)
 			}
@@ -66,7 +66,7 @@ fun MenuProductScreen(
 fun MenuProductScreenPreview() {
 	PanucciTheme {
 		Surface {
-			MenuProductScreen(
+			MenuListScreen(
 				products = sampleProducts,
 			)
 		}
