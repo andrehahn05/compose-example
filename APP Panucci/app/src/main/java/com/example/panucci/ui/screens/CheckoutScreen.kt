@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,8 +23,6 @@ import androidx.compose.material.icons.outlined.ArrowForwardIos
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,10 +39,9 @@ import com.example.panucci.ui.theme.PanucciTheme
 @Composable
 fun CheckoutScreen(
 	modifier: Modifier = Modifier,
-	products: List<Product> = emptyList(),
-	onPopBackstack: () -> Unit = {},
-) {
-	Box(modifier.fillMaxSize()) {
+	products:List<Product> = emptyList(),
+){
+	Box(modifier.fillMaxSize()){
 		LazyColumn(
 			modifier.fillMaxWidth(),
 			contentPadding = PaddingValues(
@@ -51,7 +50,7 @@ fun CheckoutScreen(
 				end = 16.dp,
 				bottom = 100.dp
 			)
-		) {
+		){
 			item {
 				Text(
 					text = "Pedido",
@@ -60,7 +59,7 @@ fun CheckoutScreen(
 				)
 				Spacer(modifier = modifier.height(16.dp))
 			}
-			items(products) { p ->
+			items(products) {p ->
 				CheckoutItemCard(product = p)
 				Spacer(modifier.height(16.dp))
 			}
@@ -76,7 +75,7 @@ fun CheckoutScreen(
 						verticalAlignment = Alignment.CenterVertically,
 						horizontalArrangement = Arrangement.SpaceBetween
 
-					) {
+					){
 						Row(
 							modifier.padding(vertical = 16.dp),
 							verticalAlignment = Alignment.CenterVertically
@@ -141,7 +140,7 @@ fun CheckoutScreen(
 			}
 		}
 		Button(
-			onClick = { onPopBackstack() },
+			onClick = { /*TODO*/ },
 			modifier
 				.padding(
 					16.dp

@@ -2,7 +2,6 @@ package com.example.panucci
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Surface
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -14,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.whenCreated
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -21,12 +21,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.panucci.navigation.AppDestination
 import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.navigation.bottomAppBarItems
+import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.ui.components.BottomAppBarItem
 import com.example.panucci.ui.components.PanucciBottomAppBar
 import com.example.panucci.ui.screens.CheckoutScreen
 import com.example.panucci.ui.screens.DrinksListScreen
 import com.example.panucci.ui.screens.HighlightsListScreen
-import com.example.panucci.ui.screens.MenuListScreen
+import com.example.panucci.ui.screens.MenuProductScreen
 import com.example.panucci.ui.screens.ProductDetailsScreen
 import com.example.panucci.ui.theme.PanucciTheme
 
@@ -93,8 +94,8 @@ class MainActivity: ComponentActivity() {
 							composable(AppDestination.Highlight.route) {
 								HighlightsListScreen(
 									products = sampleProducts,
-									onNavigateToDetails = { product ->
-										navController.navigate("${AppDestination.ProductDetails.route}/${product.id}")
+									onNavigateToDetails = {
+										navController.navigate(AppDestination.ProductDetails.route)
 									},
 									onNavigateToCheckout = {
 										navController.navigate(AppDestination.Checkout.route)
@@ -102,45 +103,29 @@ class MainActivity: ComponentActivity() {
 								)
 							}
 							composable(AppDestination.Menu.route) {
-								MenuListScreen(
+								MenuProductScreen(
 									products = sampleProducts,
-									onNavigateToDetails = { product ->
-										navController.navigate("${AppDestination.ProductDetails.route}/${product.id}")
+									onNavigateToDetails = {
+										navController.navigate(AppDestination.ProductDetails.route)
 									},
 								)
 							}
 							composable(AppDestination.Drinks.route) {
 								DrinksListScreen(
 									products = sampleProducts,
-									onNavigateToDetails = { product ->
-										navController.navigate("${AppDestination.ProductDetails.route}/${product.id}")
-									}
-								)
+								) {
+									navController.navigate(AppDestination.ProductDetails.route)
+								}
 							}
-							composable(
-								"${AppDestination.ProductDetails.route}/{productId}"
-							) { backStackEntry ->
-								val id = backStackEntry.arguments?.getString("productId")
-								sampleProducts.find {
-									it.id == id
-								}?.let { product ->
-									ProductDetailsScreen(
-										product = product,
-										onNavigateToCheckout = {
-											navController.navigate(AppDestination.Checkout.route)
-										},
-									)
-								} ?: LaunchedEffect(Unit) {
-									navController.navigateUp()
+							composable(AppDestination.ProductDetails.route) {
+								ProductDetailsScreen(
+									product = sampleProducts.random(),
+								) {
+									navController.navigate(AppDestination.Checkout.route)
 								}
 							}
 							composable(AppDestination.Checkout.route) {
-								CheckoutScreen(
-									products = sampleProducts,
-									onPopBackstack = {
-										navController.navigateUp()
-									},
-								)
+								CheckoutScreen(products = sampleProducts)
 							}
 						}
 					}
