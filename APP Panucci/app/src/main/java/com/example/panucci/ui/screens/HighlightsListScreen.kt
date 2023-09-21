@@ -29,7 +29,7 @@ fun HighlightsListScreen(
 	title: String = "Destaques do dia",
 	products: List<Product> = emptyList(),
 	onNavigateToCheckout: () -> Unit = {},
-	onNavigateToDetails: (Product) -> Unit = {},
+	onNavigateToDetails: () -> Unit = {}
 ) {
 	Column(modifier.fillMaxSize()) {
 		Surface {
@@ -53,7 +53,7 @@ fun HighlightsListScreen(
 				HighlightProductCard(
 					product = p,
 					modifier.clickable {
-						onNavigateToDetails(p)
+						onNavigateToDetails()
 					},
 					onOrderClick = onNavigateToCheckout
 				)
@@ -61,6 +61,7 @@ fun HighlightsListScreen(
 		}
 	}
 }
+
 
 @Preview
 @Composable
