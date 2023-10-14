@@ -9,13 +9,13 @@ fun PanucciNavHost(navController: NavHostController) {
 
 	NavHost(
 		navController = navController,
-		startDestination = AppDestination.Highlight.route
+		startDestination = highlightsListRoute
 	) {
 		highlightsListScreen(navController)
 		menuScreen(navController)
 		drinksScreen(navController)
 		productDetailsScreen(navController)
-		checkoutScreen()
+		checkoutScreen(navController)
 
 	}
 }

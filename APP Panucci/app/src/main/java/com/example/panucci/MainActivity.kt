@@ -1,5 +1,6 @@
 package com.example.panucci
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -21,6 +22,7 @@ import com.example.panucci.navigation.bottomAppBarItems
 import com.example.panucci.ui.components.BottomAppBarItem
 import com.example.panucci.ui.components.PanucciBottomAppBar
 import com.example.panucci.ui.theme.PanucciTheme
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity: ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +59,7 @@ class MainActivity: ComponentActivity() {
 					} != null
 					val isShowFab = when (currentDestination?.route) {
 						AppDestination.Menu.route,
-						AppDestination.Drinks.route,
-						-> true
+						AppDestination.Drinks.route -> true
 
 						else -> false
 					}

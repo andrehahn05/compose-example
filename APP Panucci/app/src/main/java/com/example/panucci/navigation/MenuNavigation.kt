@@ -1,13 +1,15 @@
 package com.example.panucci.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.ui.screens.MenuProductScreen
 
+private const val menuRoute = "menu"
 fun NavGraphBuilder.menuScreen(navController: NavHostController) {
-	composable(AppDestination.Menu.route) {
+	composable(menuRoute) {
 		MenuProductScreen(
 			products = sampleProducts,
 			onNavigateToDetails = {
@@ -15,4 +17,8 @@ fun NavGraphBuilder.menuScreen(navController: NavHostController) {
 			},
 		)
 	}
+}
+
+fun NavController.navigateToMenu() {
+	navigate(menuRoute)
 }

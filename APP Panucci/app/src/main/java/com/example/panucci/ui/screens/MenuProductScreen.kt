@@ -28,7 +28,7 @@ fun MenuProductScreen(
 	modifier: Modifier = Modifier,
 	products: List<Product> = emptyList(),
 	title: String = "Menu",
-	onNavigateToDetails: () -> Unit = {}
+	onNavigateToDetails: (Product) -> Unit = {}
 ) {
 	Column(modifier.fillMaxWidth()) {
 		Surface {
@@ -53,7 +53,7 @@ fun MenuProductScreen(
 					product = p,
 					modifier = Modifier
 						.clickable {
-							onNavigateToDetails()
+							onNavigateToDetails(p)
 						}
 				)
 			}
