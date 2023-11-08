@@ -6,17 +6,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.panucci.navigation.AppDestination
+import com.example.panucci.navigation.BottomAppBarItem
 import com.example.panucci.navigation.bottomAppBarItems
 import com.example.panucci.ui.theme.PanucciTheme
 
-class BottomAppBarItem(
-	val label: String,
-	val icon: ImageVector,
-	val destination: AppDestination
-)
+
 
 @Composable
 fun PanucciBottomAppBar(
