@@ -1,0 +1,45 @@
+package com.example.panucci.navigation
+
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.navOptions
+import androidx.navigation.navigation
+
+internal const val homeGraphRoute = "home"
+
+fun NavGraphBuilder.homeGraph(navController: NavHostController) {
+    navigation(
+        startDestination = highlightsListRoute,
+        route = homeGraphRoute
+    ) {
+        highlightsListScreen(navController)
+        menuScreen(navController)
+        drinksScreen(navController)
+    }
+}
+fun NavController.navigateSingleTopClearBackStack(
+    item: BottomAppBarItem,
+) {
+    val (route, navigate) = when (item) {
+        BottomAppBarItem.Drinks -> Pair(
+            drinksRoute,
+            ::navigateToDrinks
+        )
+
+        BottomAppBarItem.HighlightsList -> Pair(
+            highlightsListRoute,
+            ::navigateToHighlightsList
+        )
+
+        BottomAppBarItem.Menu -> Pair(
+            menuRoute,
+            ::navigateToMenu
+        )
+    }
+    val navOptions = navOptions {
+        launchSingleTop = true
+        popUpTo(route)
+    }
+    navigate(navOptions)
+}

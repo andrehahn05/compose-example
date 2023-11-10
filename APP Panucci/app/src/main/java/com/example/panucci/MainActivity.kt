@@ -21,10 +21,8 @@ import com.example.panucci.navigation.bottomAppBarItems
 import com.example.panucci.navigation.drinksRoute
 import com.example.panucci.navigation.highlightsListRoute
 import com.example.panucci.navigation.menuRoute
+import com.example.panucci.navigation.navigateSingleTopClearBackStack
 import com.example.panucci.navigation.navigateToCheckout
-import com.example.panucci.navigation.navigateToDrinks
-import com.example.panucci.navigation.navigateToHighlightsList
-import com.example.panucci.navigation.navigateToMenu
 import com.example.panucci.ui.components.PanucciBottomAppBar
 import com.example.panucci.ui.theme.PanucciTheme
 
@@ -34,11 +32,11 @@ class MainActivity: ComponentActivity() {
 		setContent {
 			val navController = rememberNavController()
 			LaunchedEffect(Unit) {
-				navController.addOnDestinationChangedListener { _,_,_ ->
+				navController.addOnDestinationChangedListener { _, _, _ ->
 					val routes = navController.backQueue.map {
 						it.destination.route
 					}
-					Log.i("MainActivity","onCreate: back stack - $routes")
+					Log.i("MainActivity", "onCreate: back stack - $routes")
 				}
 			}
 			val backStackEntryState by navController.currentBackStackEntryAsState()
@@ -58,26 +56,21 @@ class MainActivity: ComponentActivity() {
 						}
 						mutableStateOf(item)
 					}
-					val containsInBottomAppBarItems = when(currentRoute) {
+					val containsInBottomAppBarItems = when (currentRoute) {
 						highlightsListRoute, menuRoute, drinksRoute -> true
 						else -> false
 					}
 					val isShowFab = when (currentDestination?.route) {
 						menuRoute,
 						drinksRoute -> true
+
 						else -> false
 					}
 					PanucciApp(
 						bottomAppBarItemSelected = selectedItem,
 						onBottomAppBarItemSelectedChange = { item ->
 
-							//Don't do that! provisional
-						when(item){
-							BottomAppBarItem.Drinks -> navController.navigateToDrinks()
-							BottomAppBarItem.HighlightsList -> navController.navigateToHighlightsList()
-							BottomAppBarItem.Menu -> navController.navigateToMenu()
-						}
-
+							navController.navigateSingleTopClearBackStack(item)
 						},
 						onFabClick = {
 							navController.navigateToCheckout()
@@ -92,65 +85,66 @@ class MainActivity: ComponentActivity() {
 			}
 		}
 	}
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PanucciApp(
-	bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
-	onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
-	onFabClick: () -> Unit = {},
-	isShowTopBar: Boolean = false,
-	isShowBottomBar: Boolean = false,
-	isShowFab: Boolean = false,
-	content: @Composable () -> Unit,
-) {
-	Scaffold(
-		topBar = {
-			if (isShowTopBar) {
-				CenterAlignedTopAppBar(
-					title = {
-						Text(text = "Ristorante Panucci")
-					},
-				)
-			}
-		},
-		bottomBar = {
-			if (isShowBottomBar) {
-				PanucciBottomAppBar(
-					item = bottomAppBarItemSelected,
-					items = bottomAppBarItems,
-					onItemChange = onBottomAppBarItemSelectedChange,
-				)
-			}
-		},
-		floatingActionButton = {
-			if (isShowFab) {
-				FloatingActionButton(
-					onClick = onFabClick
-				) {
-					Icon(
-						Icons.Filled.PointOfSale,
-						contentDescription = null
+
+	@OptIn(ExperimentalMaterial3Api::class)
+	@Composable
+	fun PanucciApp(
+		bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
+		onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
+		onFabClick: () -> Unit = {},
+		isShowTopBar: Boolean = false,
+		isShowBottomBar: Boolean = false,
+		isShowFab: Boolean = false,
+		content: @Composable () -> Unit,
+	) {
+		Scaffold(
+			topBar = {
+				if (isShowTopBar) {
+					CenterAlignedTopAppBar(
+						title = {
+							Text(text = "Ristorante Panucci")
+						},
 					)
 				}
+			},
+			bottomBar = {
+				if (isShowBottomBar) {
+					PanucciBottomAppBar(
+						item = bottomAppBarItemSelected,
+						items = bottomAppBarItems,
+						onItemChange = onBottomAppBarItemSelectedChange,
+					)
+				}
+			},
+			floatingActionButton = {
+				if (isShowFab) {
+					FloatingActionButton(
+						onClick = onFabClick
+					) {
+						Icon(
+							Icons.Filled.PointOfSale,
+							contentDescription = null
+						)
+					}
+				}
+			}
+		) {
+			Box(
+				modifier = Modifier.padding(it)
+			) {
+				content()
 			}
 		}
-	) {
-		Box(
-			modifier = Modifier.padding(it)
-		) {
-			content()
-		}
 	}
-}
 
-@Preview
-@Composable
-private fun PanucciAppPreview() {
-	PanucciTheme {
-		Surface {
-			PanucciApp {}
+	@Preview
+	@Composable
+	private fun PanucciAppPreview() {
+		PanucciTheme {
+			Surface {
+				PanucciApp {}
+			}
 		}
 	}
 }
