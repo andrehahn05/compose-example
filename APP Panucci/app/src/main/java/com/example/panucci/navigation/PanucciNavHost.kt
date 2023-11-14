@@ -9,7 +9,7 @@ fun PanucciNavHost(navController: NavHostController) {
 
 	NavHost(
 		navController = navController,
-		startDestination = highlightsListRoute
+		startDestination = homeGraphRoute
 	) {
 		highlightsListScreen(navController)
 		menuScreen(navController)

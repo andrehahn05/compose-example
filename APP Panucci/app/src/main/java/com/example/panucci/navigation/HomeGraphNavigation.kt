@@ -18,6 +18,10 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController) {
         drinksScreen(navController)
     }
 }
+
+fun NavController.navigateToHomeGraph(){
+    navigate(homeGraphRoute)
+}
 fun NavController.navigateSingleTopClearBackStack(
     item: BottomAppBarItem,
 ) {
