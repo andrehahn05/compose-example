@@ -11,11 +11,11 @@ fun PanucciNavHost(navController: NavHostController) {
 		navController = navController,
 		startDestination = homeGraphRoute
 	) {
+		homeGraph(navController)
 		highlightsListScreen(navController)
 		menuScreen(navController)
 		drinksScreen(navController)
 		productDetailsScreen(navController)
 		checkoutScreen(navController)
-
 	}
 }

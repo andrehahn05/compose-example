@@ -20,7 +20,7 @@ fun NavGraphBuilder.productDetailsScreen(navController: NavHostController) {
 		backStackEntry.arguments?.getString(productIdArgument)?.let { id ->
 			val viewModel = viewModel<ProductDetailsViewModel>()
 			val uiState by viewModel.uiState.collectAsState()
-			LaunchedEffect(Unit){
+			LaunchedEffect(Unit) {
 				viewModel.findProductById(id)
 			}
 			ProductDetailsScreen(
@@ -28,6 +28,12 @@ fun NavGraphBuilder.productDetailsScreen(navController: NavHostController) {
 				onNavigateToCheckout = {
 					navController.navigateToCheckout()
 				},
+				onTryFindProductAgain = {
+					viewModel.findProductById(id)
+				},
+				onBackStack = {
+					navController.navigateUp()
+				}
 			)
 		} ?: LaunchedEffect(Unit) {
 			navController.navigateUp()

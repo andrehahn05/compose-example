@@ -19,7 +19,7 @@ fun NavGraphBuilder.menuScreen(navController: NavHostController) {
         MenuProductScreen(
             uiState = uiState,
             onNavigateToDetails = { product ->
-                navController.navigate(product.id)
+                navController.navigateToProductDetails(product.id)
             },
         )
     }
