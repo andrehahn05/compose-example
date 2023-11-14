@@ -22,53 +22,57 @@ import com.example.panucci.sampledata.sampleProducts
 import com.example.panucci.ui.components.MenuProductCard
 import com.example.panucci.ui.theme.PanucciTheme
 import com.example.panucci.ui.theme.caveatFont
+import com.example.panucci.ui.uistate.MenuListUiState
 
 @Composable
 fun MenuProductScreen(
-	modifier: Modifier = Modifier,
-	products: List<Product> = emptyList(),
-	title: String = "Menu",
-	onNavigateToDetails: (Product) -> Unit = {}
+    modifier: Modifier = Modifier,
+    title: String = "Menu",
+    onNavigateToDetails: (Product) -> Unit = {},
+    uiState: MenuListUiState = MenuListUiState()
 ) {
-	Column(modifier.fillMaxWidth()) {
-		Surface {
-			Text(
-				text = title,
+    val products = uiState.products
+    Column(modifier.fillMaxWidth()) {
+        Surface {
+            Text(
+                text = title,
 				modifier
 					.fillMaxWidth()
 					.padding(horizontal = 8.dp),
-				fontSize = 32.sp,
-				fontFamily = caveatFont,
-				textAlign = TextAlign.Center
-			)
-		}
-		LazyColumn(
-			modifier.fillMaxSize(),
-			contentPadding = PaddingValues(16.dp),
-			verticalArrangement = Arrangement.spacedBy(8.dp)
+                fontSize = 32.sp,
+                fontFamily = caveatFont,
+                textAlign = TextAlign.Center
+            )
+        }
+        LazyColumn(
+            modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
 
-		) {
-			items(products) { p ->
-				MenuProductCard(
-					product = p,
-					modifier = Modifier
-						.clickable {
-							onNavigateToDetails(p)
-						}
-				)
-			}
-		}
-	}
+        ) {
+            items(products) { p ->
+                MenuProductCard(
+                    product = p,
+                    modifier = Modifier
+                        .clickable {
+                            onNavigateToDetails(p)
+                        }
+                )
+            }
+        }
+    }
 }
 
 @Preview
 @Composable
 fun MenuProductScreenPreview() {
-	PanucciTheme {
-		Surface {
-			MenuProductScreen(
-				products = sampleProducts,
-			)
-		}
-	}
+    PanucciTheme {
+        Surface {
+            MenuProductScreen(
+                uiState = MenuListUiState(
+                    products = sampleProducts,
+                ),
+            )
+        }
+    }
 }
