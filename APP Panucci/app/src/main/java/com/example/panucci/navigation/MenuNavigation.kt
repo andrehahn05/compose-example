@@ -5,26 +5,28 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.panucci.ui.screens.MenuProductScreen
+import com.example.panucci.model.Product
+import com.example.panucci.ui.screens.MenuListScreen
 import com.example.panucci.ui.viewmodels.MenuListViewModel
 
 internal const val menuRoute = "menu"
-fun NavGraphBuilder.menuScreen(navController: NavHostController) {
+fun NavGraphBuilder.menuScreen(
+    onNavigateToProductDetails: (Product) -> Unit
+) {
     composable(menuRoute) {
         val viewModel = viewModel<MenuListViewModel>()
         val uiState by viewModel.uiState.collectAsState()
-        MenuProductScreen(
+        MenuListScreen(
             uiState = uiState,
-            onNavigateToDetails = { product ->
-                navController.navigateToProductDetails(product.id)
-            },
+            onProductClick = onNavigateToProductDetails,
         )
     }
 }
 
-fun NavController.navigateToMenu(navOptions: NavOptions? = null) {
+fun NavController.navigateToMenu(
+    navOptions: NavOptions? = null
+) {
     navigate(menuRoute, navOptions)
 }

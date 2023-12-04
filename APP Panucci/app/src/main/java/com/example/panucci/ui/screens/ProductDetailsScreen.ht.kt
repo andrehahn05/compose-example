@@ -35,8 +35,8 @@ import com.example.panucci.ui.uistate.ProductDetailsUiState
 fun ProductDetailsScreen(
     uiState: ProductDetailsUiState,
     modifier: Modifier = Modifier,
-    onNavigateToCheckout: () -> Unit = {},
-    onTryFindProductAgain: () -> Unit = {},
+    onOrderClick: () -> Unit = {},
+    onTryFindProductAgainClick: () -> Unit = {},
     onBackStack: () -> Unit = {}
 ) {
     when (uiState) {
@@ -48,7 +48,7 @@ fun ProductDetailsScreen(
             ) {
                 Text(text = "Falha ao buscar o produto")
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = onTryFindProductAgain) {
+                Button(onClick = onTryFindProductAgainClick) {
                     Text(text = "Tentar buscar novamente")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -90,7 +90,7 @@ fun ProductDetailsScreen(
                     Text(product.price.toPlainString(), fontSize = 18.sp)
                     Text(product.description)
                     Button(
-                        onClick = { onNavigateToCheckout() },
+                        onClick = { onOrderClick() },
                         Modifier
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)

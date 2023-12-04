@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.panucci.navigation.BottomAppBarItem
@@ -21,12 +22,14 @@ import com.example.panucci.navigation.bottomAppBarItems
 import com.example.panucci.navigation.drinksRoute
 import com.example.panucci.navigation.highlightsListRoute
 import com.example.panucci.navigation.menuRoute
-import com.example.panucci.navigation.navigateSingleTopClearBackStack
+import com.example.panucci.navigation.navigateSingleTopWithPopUpTo
 import com.example.panucci.navigation.navigateToCheckout
 import com.example.panucci.ui.components.PanucciBottomAppBar
 import com.example.panucci.ui.theme.PanucciTheme
+import kotlinx.coroutines.launch
 
-class MainActivity: ComponentActivity() {
+class MainActivity : ComponentActivity() {
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
@@ -40,7 +43,21 @@ class MainActivity: ComponentActivity() {
 				}
 			}
 			val backStackEntryState by navController.currentBackStackEntryAsState()
+			val orderDoneMessage = backStackEntryState
+				?.savedStateHandle
+				?.getStateFlow<String?>("order_done", null)
+				?.collectAsState()
+			Log.i("MainActivity", "onCreate: order done msg ${orderDoneMessage?.value}")
 			val currentDestination = backStackEntryState?.destination
+			val snackbarHostState = remember {
+				SnackbarHostState()
+			}
+			val scope = rememberCoroutineScope()
+			orderDoneMessage?.value?.let { message ->
+				scope.launch {
+					snackbarHostState.showSnackbar(message = message)
+				}
+			}
 			PanucciTheme {
 				Surface(
 					modifier = Modifier.fillMaxSize(),
@@ -67,10 +84,10 @@ class MainActivity: ComponentActivity() {
 						else -> false
 					}
 					PanucciApp(
+						snackbarHostState = snackbarHostState,
 						bottomAppBarItemSelected = selectedItem,
 						onBottomAppBarItemSelectedChange = { item ->
-
-							navController.navigateSingleTopClearBackStack(item)
+							navController.navigateSingleTopWithPopUpTo(item)
 						},
 						onFabClick = {
 							navController.navigateToCheckout()
@@ -79,72 +96,79 @@ class MainActivity: ComponentActivity() {
 						isShowBottomBar = containsInBottomAppBarItems,
 						isShowFab = isShowFab
 					) {
-						PanucciNavHost(navController)
+						PanucciNavHost(navController = navController)
 					}
 				}
 			}
 		}
 	}
+}
 
-
-	@OptIn(ExperimentalMaterial3Api::class)
-	@Composable
-	fun PanucciApp(
-		bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
-		onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
-		onFabClick: () -> Unit = {},
-		isShowTopBar: Boolean = false,
-		isShowBottomBar: Boolean = false,
-		isShowFab: Boolean = false,
-		content: @Composable () -> Unit,
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PanucciApp(
+	bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
+	onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
+	onFabClick: () -> Unit = {},
+	isShowTopBar: Boolean = false,
+	isShowBottomBar: Boolean = false,
+	isShowFab: Boolean = false,
+	snackbarHostState: SnackbarHostState = SnackbarHostState(),
+	content: @Composable () -> Unit
+) {
+	Scaffold(
+		snackbarHost = {
+			SnackbarHost(hostState = snackbarHostState) { data ->
+				Snackbar(Modifier.padding(8.dp)) {
+					Text(text = data.visuals.message)
+				}
+			}
+		},
+		topBar = {
+			if (isShowTopBar) {
+				CenterAlignedTopAppBar(
+					title = {
+						Text(text = "Ristorante Panucci")
+					},
+				)
+			}
+		},
+		bottomBar = {
+			if (isShowBottomBar) {
+				PanucciBottomAppBar(
+					item = bottomAppBarItemSelected,
+					items = bottomAppBarItems,
+					onItemChange = onBottomAppBarItemSelectedChange,
+				)
+			}
+		},
+		floatingActionButton = {
+			if (isShowFab) {
+				FloatingActionButton(
+					onClick = onFabClick
+				) {
+					Icon(
+						Icons.Filled.PointOfSale,
+						contentDescription = null
+					)
+				}
+			}
+		}
 	) {
-		Scaffold(
-			topBar = {
-				if (isShowTopBar) {
-					CenterAlignedTopAppBar(
-						title = {
-							Text(text = "Ristorante Panucci")
-						},
-					)
-				}
-			},
-			bottomBar = {
-				if (isShowBottomBar) {
-					PanucciBottomAppBar(
-						item = bottomAppBarItemSelected,
-						items = bottomAppBarItems,
-						onItemChange = onBottomAppBarItemSelectedChange,
-					)
-				}
-			},
-			floatingActionButton = {
-				if (isShowFab) {
-					FloatingActionButton(
-						onClick = onFabClick
-					) {
-						Icon(
-							Icons.Filled.PointOfSale,
-							contentDescription = null
-						)
-					}
-				}
-			}
+		Box(
+			modifier = Modifier.padding(it)
 		) {
-			Box(
-				modifier = Modifier.padding(it)
-			) {
-				content()
-			}
+			content()
 		}
 	}
+}
 
-	@Preview
-	@Composable
-	private fun PanucciAppPreview() {
-		PanucciTheme {
-			Surface {
-				PanucciApp {}
-			}
+@Preview
+@Composable
+private fun PanucciAppPreview() {
+	PanucciTheme {
+		Surface {
+			PanucciApp(content = {})
 		}
 	}
 }

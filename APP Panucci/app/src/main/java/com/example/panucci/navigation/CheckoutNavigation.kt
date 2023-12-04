@@ -12,16 +12,16 @@ import com.example.panucci.ui.viewmodels.CheckoutViewModel
 
 private const val checkoutRoute = "checkout"
 
-fun NavGraphBuilder.checkoutScreen(navController: NavHostController) {
+fun NavGraphBuilder.checkoutScreen(
+	onPopBackStack: () -> Unit
+) {
 	composable(checkoutRoute) {
 		val viewModel = viewModel<CheckoutViewModel>()
 		val uiState by viewModel.uiState.collectAsState()
 
 		CheckoutScreen(
 			uiState = uiState,
-			onPopBackStack = {
-				navController.navigateUp()
-			},
+			onOrderClick = onPopBackStack,
 		)
 	}
 }

@@ -25,10 +25,10 @@ import com.example.panucci.ui.theme.caveatFont
 import com.example.panucci.ui.uistate.MenuListUiState
 
 @Composable
-fun MenuProductScreen(
+fun MenuListScreen(
     modifier: Modifier = Modifier,
     title: String = "Menu",
-    onNavigateToDetails: (Product) -> Unit = {},
+    onProductClick: (Product) -> Unit = {},
     uiState: MenuListUiState = MenuListUiState()
 ) {
     val products = uiState.products
@@ -55,7 +55,7 @@ fun MenuProductScreen(
                     product = p,
                     modifier = Modifier
                         .clickable {
-                            onNavigateToDetails(p)
+                            onProductClick(p)
                         }
                 )
             }
@@ -68,7 +68,7 @@ fun MenuProductScreen(
 fun MenuProductScreenPreview() {
     PanucciTheme {
         Surface {
-            MenuProductScreen(
+            MenuListScreen(
                 uiState = MenuListUiState(
                     products = sampleProducts,
                 ),
