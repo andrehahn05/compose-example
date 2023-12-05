@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.panucci.dao.ProductDao
 import com.example.panucci.navigation.productIdArgument
+import com.example.panucci.navigation.promoCodeArgument
 import com.example.panucci.ui.uistate.ProductDetailsUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import kotlin.random.Random
 
 class ProductDetailsViewModel(
@@ -28,10 +30,17 @@ class ProductDetailsViewModel(
         ProductDetailsUiState.Loading
     )
     val uiState = _uiState.asStateFlow()
+    private var discount = BigDecimal.ZERO
+
     init {
         viewModelScope.launch {
+            val promoCode = savedStateHandle.get<String?>(promoCodeArgument)
+            discount = when(promoCode) {
+                "PANUCCI10" -> BigDecimal("0.1")
+                else -> BigDecimal.ZERO
+            }
             savedStateHandle
-                .getStateFlow<String?>(productIdArgument,null)
+                .getStateFlow<String?>(productIdArgument, null)
                 .filterNotNull()
                 .collect { id ->
                     findProductById(id)
@@ -41,14 +50,16 @@ class ProductDetailsViewModel(
     fun findProductById(id: String) {
         _uiState.update { ProductDetailsUiState.Loading }
         viewModelScope.launch {
-            val timemillis = Random.nextLong(500, 1000)
+            val timemillis = Random.nextLong(500, 2000)
             delay(timemillis)
             val dataState = dao.findById(id)?.let { product ->
-                ProductDetailsUiState.Success(product = product)
+                val priceWithDiscount = product.price - (product.price * discount)
+                ProductDetailsUiState.Success(product = product.copy(price = priceWithDiscount))
             } ?: ProductDetailsUiState.Failure
             _uiState.update { dataState }
         }
     }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
