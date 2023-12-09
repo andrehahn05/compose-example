@@ -48,6 +48,6 @@ fun NavGraphBuilder.productDetailsScreen(
 }
 
 
-fun NavController.navigateToProductDetails(id: Unit) {
+fun NavController.navigateToProductDetails(id: String) {
     navigate("$productDetailsRoute/$id")
 }
