@@ -4,7 +4,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -14,6 +17,8 @@ import androidx.navigation.testing.TestNavHostController
 import com.example.panucci.navigation.drinksRoute
 import com.example.panucci.navigation.highlightsListRoute
 import com.example.panucci.navigation.menuRoute
+import com.example.panucci.navigation.productDetailsRoute
+import com.example.panucci.navigation.productIdArgument
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -79,5 +84,48 @@ class NavigationTest {
 
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, highlightsListRoute)
+    }
+    @Test
+    fun appNavHost_verifyIfProductDetailsScreenIsDisplayedFromHighlightsListScreen() {
+        composeTestRule.onRoot().printToLog("panucci app")
+        composeTestRule
+            .onAllNodesWithContentDescription("highlight product card item")
+            .onFirst()
+            .performClick()
+
+        composeTestRule.waitUntil(3000) {
+            composeTestRule.onAllNodesWithText("Falha ao buscar o produto")
+                .fetchSemanticsNodes().size == 1
+        }
+
+        composeTestRule.onNodeWithText("Falha ao buscar o produto")
+            .assertIsDisplayed()
+
+        val route = navController.currentBackStackEntry?.destination?.route
+        assertEquals(route, "$productDetailsRoute/{$productIdArgument}")
+    }
+
+    @Test
+    fun appNavHost_verifyIfProductDetailsScreenIsDisplayedFromMenuScreen() {
+        composeTestRule.onRoot().printToLog("panucci app")
+        composeTestRule.onNodeWithText("Menu")
+            .performClick()
+
+        composeTestRule
+            .onAllNodesWithContentDescription("menu product card item")
+            .onFirst()
+            .performClick()
+
+        composeTestRule.waitUntil(3000) {
+            composeTestRule.onAllNodesWithContentDescription("product details content")
+                .fetchSemanticsNodes().size == 1
+        }
+
+        composeTestRule
+            .onNodeWithContentDescription("product details content")
+            .assertIsDisplayed()
+
+        val route = navController.currentBackStackEntry?.destination?.route
+        assertEquals(route, "$productDetailsRoute/{$productIdArgument}")
     }
 }
