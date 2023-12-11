@@ -12,11 +12,13 @@ import androidx.compose.ui.test.printToLog
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.example.panucci.navigation.PanucciNavHost
+import com.example.panucci.navigation.drinksRoute
 import com.example.panucci.navigation.menuRoute
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+
 class NavigationTest {
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -50,5 +52,18 @@ class NavigationTest {
 
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, menuRoute)
+    }
+
+    @Test
+    fun appNavHost_verifyIfDrinksScreenIsDisplayed() {
+        composeTestRule.onRoot().printToLog("panucci app")
+        composeTestRule.onNodeWithText("Bebidas")
+            .performClick()
+
+        composeTestRule.onAllNodesWithText("Bebidas")
+            .assertCountEquals(2)
+
+        val route = navController.currentBackStackEntry?.destination?.route
+        assertEquals(route, drinksRoute)
     }
 }
