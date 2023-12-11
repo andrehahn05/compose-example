@@ -7,26 +7,26 @@ import androidx.compose.material.icons.outlined.LocalBar
 import androidx.compose.ui.graphics.vector.ImageVector
 
 
-sealed class BottomAppBarItem(
-    val label: String,
-    val icon: ImageVector
-) {
-    object HighlightsList : BottomAppBarItem(
-        label = "Destaques",
-        icon = Icons.Filled.AutoAwesome
-    )
-    object Menu : BottomAppBarItem(
-        label = "Menu",
-        icon = Icons.Filled.RestaurantMenu
-    )
-    object Drinks : BottomAppBarItem(
-        label = "Bebidas",
-        icon = Icons.Outlined.LocalBar
-    )
-}
-
-val bottomAppBarItems = listOf(
-    BottomAppBarItem.HighlightsList,
-    BottomAppBarItem.Menu,
-    BottomAppBarItem.Drinks
-)
+//sealed class BottomAppBarItem(
+//    val label: String,
+//    val icon: ImageVector
+//) {
+//    object HighlightsList : BottomAppBarItem(
+//        label = "Destaques",
+//        icon = Icons.Filled.AutoAwesome
+//    )
+//    object Menu : BottomAppBarItem(
+//        label = "Menu",
+//        icon = Icons.Filled.RestaurantMenu
+//    )
+//    object Drinks : BottomAppBarItem(
+//        label = "Bebidas",
+//        icon = Icons.Outlined.LocalBar
+//    )
+//}
+//
+//val bottomAppBarItems = listOf(
+//    BottomAppBarItem.HighlightsList,
+//    BottomAppBarItem.Menu,
+//    BottomAppBarItem.Drinks
+//)

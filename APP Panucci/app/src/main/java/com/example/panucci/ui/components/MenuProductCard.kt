@@ -1,5 +1,7 @@
 package com.example.panucci.ui.components
 
+
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -28,71 +32,71 @@ import com.example.panucci.ui.theme.PanucciTheme
 
 @Composable
 fun MenuProductCard(
-	product: Product,
-	modifier: Modifier = Modifier,
+    product: Product,
+    modifier: Modifier = Modifier,
 ) {
-	Card(
+    Card(
 		modifier
 			.fillMaxWidth()
 			.height(80.dp)
-	) {
-		Row{
-			Column(
+
+    ) {
+        Row {
+            Column(
 				modifier
-					.padding(16.dp)
 					.weight(3f)
+					.padding(10.dp)
 
-			) {
-				Text(
-					text = product.name,
-					maxLines = 1,
-					overflow = TextOverflow.Ellipsis,
-					fontSize = 16.sp,
-					fontWeight = FontWeight(500)
-				)
-				Spacer(modifier.height(4.dp))
-				Text(
-					text = product.price.toPlainString(),
-					Modifier.fillMaxWidth(),
-					maxLines = 1,
-					overflow = TextOverflow.Ellipsis,
-					fontWeight = FontWeight(400)
-				)
-			}
+            ) {
+                Text(
+                    text = product.name,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500)
+                )
+                Spacer(modifier.height(2.dp))
+                Text(
+                    text = product.price.toPlainString(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight(400),
 
-			product.image?.let { image ->
-				AsyncImage(
-					model = image,
-					contentDescription = null,
+                    )
+
+            }
+            product.image?.let { image ->
+                AsyncImage(
+                    model = image,
+                    contentDescription = null,
 					modifier
 						.width(80.dp)
 						.fillMaxHeight(),
-					placeholder = painterResource(id = R.drawable.placeholder),
-					contentScale = ContentScale.Crop
-
-				)
-
-			}
-		}
-	}
+                    placeholder = painterResource(id = R.drawable.placeholder),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+    }
 }
+
 
 @Preview
 @Composable
 fun MenuProductCardPreview() {
-	PanucciTheme {
-		MenuProductCard(
-			product = sampleProductWithoutImage
-		)
-	}
+    PanucciTheme {
+        MenuProductCard(
+            product = sampleProductWithoutImage
+        )
+    }
 }
 
 @Preview
 @Composable
 fun MenuProductCardWithImagePreview() {
-	PanucciTheme {
-		MenuProductCard(
-			product = sampleProductWithImage
-		)
-	}
+    PanucciTheme {
+        MenuProductCard(
+            product = sampleProductWithImage
+        )
+    }
 }

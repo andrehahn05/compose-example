@@ -27,7 +27,7 @@ class NavigationTest {
         composeTestRule.setContent {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            PanucciNavHost(navController = navController)
+            PanucciApp(navController = navController)
         }
     }
 
@@ -45,7 +45,7 @@ class NavigationTest {
         composeTestRule.onNodeWithText("Menu")
             .performClick()
 
-        composeTestRule.onAllNodesWithText("menu")
+        composeTestRule.onAllNodesWithText("Menu")
             .assertCountEquals(2)
 
         val route = navController.currentBackStackEntry?.destination?.route

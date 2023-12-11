@@ -17,15 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.panucci.navigation.BottomAppBarItem
 import com.example.panucci.navigation.PanucciNavHost
-import com.example.panucci.navigation.bottomAppBarItems
 import com.example.panucci.navigation.drinksRoute
 import com.example.panucci.navigation.highlightsListRoute
 import com.example.panucci.navigation.menuRoute
 import com.example.panucci.navigation.navigateSingleTopWithPopUpTo
 import com.example.panucci.navigation.navigateToCheckout
+import com.example.panucci.ui.components.BottomAppBarItem
 import com.example.panucci.ui.components.PanucciBottomAppBar
+import com.example.panucci.ui.components.bottomAppBarItems
 import com.example.panucci.ui.theme.PanucciTheme
 import kotlinx.coroutines.launch
 
