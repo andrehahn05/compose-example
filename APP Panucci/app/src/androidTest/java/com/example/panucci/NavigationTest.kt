@@ -11,8 +11,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.example.panucci.navigation.PanucciNavHost
 import com.example.panucci.navigation.drinksRoute
+import com.example.panucci.navigation.highlightsListRoute
 import com.example.panucci.navigation.menuRoute
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -65,5 +65,19 @@ class NavigationTest {
 
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, drinksRoute)
+    }
+
+    @Test
+    fun appNavHost_verifyIfHighlightsScreenIsDisplayed() {
+        composeTestRule.onRoot().printToLog("panucci app")
+        composeTestRule.onNodeWithText("Destaques")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("Destaques do dia")
+            .assertIsDisplayed()
+
+        val route = navController.currentBackStackEntry?.destination?.route
+        assertEquals(route, highlightsListRoute)
     }
 }
