@@ -71,7 +71,6 @@ class NavigationTest {
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, drinksRoute)
     }
-
     @Test
     fun appNavHost_verifyIfHighlightsScreenIsDisplayed() {
         composeTestRule.onRoot().printToLog("panucci app")
@@ -104,7 +103,6 @@ class NavigationTest {
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, "$productDetailsRoute/{$productIdArgument}")
     }
-
     @Test
     fun appNavHost_verifyIfProductDetailsScreenIsDisplayedFromMenuScreen() {
         composeTestRule.onRoot().printToLog("panucci app")
@@ -127,5 +125,29 @@ class NavigationTest {
 
         val route = navController.currentBackStackEntry?.destination?.route
         assertEquals(route, "$productDetailsRoute/{$productIdArgument}")
+    }
+    @Test
+    fun appNavHost_verifyIfProductDetailsScreenIsDisplayedFromDrinksScreen() {
+        composeTestRule.onRoot().printToLog("panucci app")
+        composeTestRule.onNodeWithText("Bebidas")
+            .performClick()
+
+        composeTestRule
+            .onAllNodesWithContentDescription("drink product card item")
+            .onFirst()
+            .performClick()
+
+        composeTestRule.waitUntil(3000) {
+            composeTestRule.onAllNodesWithContentDescription("product details content")
+                .fetchSemanticsNodes().size == 1
+        }
+
+        composeTestRule
+            .onNodeWithContentDescription("product details content")
+            .assertIsDisplayed()
+
+        val route = navController.currentBackStackEntry?.destination?.route
+        assertEquals(route, "$productDetailsRoute/{$productIdArgument}")
+
     }
 }
